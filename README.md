@@ -76,7 +76,7 @@ Add to your project's `opencode.json`:
 
 After connecting, ask the agent to call `build_database` to initialize the knowledge base, then use `add_mod` to add any mods you want to analyze.
 
-## MCP Tools (17)
+## MCP Tools (19)
 
 ### Search & Discovery
 | Tool | Description |
@@ -106,6 +106,12 @@ After connecting, ask the agent to call `build_database` to initialize the knowl
 | `find_harmony_patches` | Find patches on a target type/method with parameter type info |
 | `list_harmony_patches` | List patches by source mod |
 
+### XML Patches
+| Tool | Description |
+|------|-------------|
+| `list_xml_patches` | List XML Patches from a mod with pagination |
+| `find_xml_patches` | Find XML Patches by def_name |
+
 ### Source Code
 | Tool | Description |
 |------|-------------|
@@ -114,7 +120,7 @@ After connecting, ask the agent to call `build_database` to initialize the knowl
 ### Database Management
 | Tool | Description |
 |------|-------------|
-| `build_database` | Build/rebuild from game files |
+| `build_database` | Build/rebuild from game files. Clears all data. |
 | `add_mod` | Add a mod to the knowledge base |
 | `remove_mod` | Remove a mod from the knowledge base |
 | `list_sources` | Show loaded sources (Core/DLC/Mods) |
