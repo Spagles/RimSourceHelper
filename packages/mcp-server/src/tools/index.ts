@@ -274,6 +274,7 @@ export async function handleToolCall(
     case "list_harmony_patches": return listHarmonyPatches(safeArgs, config);
     case "list_xml_patches": return listXmlPatches(safeArgs, config);
     case "find_xml_patches": return findXmlPatches(safeArgs, config);
+    case "decompile_target": return decompile(safeArgs, config);
     case "build_database": return buildDatabase(safeArgs, config);
     case "add_mod": return addMod(safeArgs, config);
     case "remove_mod": return removeMod(safeArgs, config);
