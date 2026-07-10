@@ -29,3 +29,6 @@ node_modules/
 dist/
 release/
 *.log
+
+packages/rim-analyzer/publish/*
+packages/rim-analyzer/publish

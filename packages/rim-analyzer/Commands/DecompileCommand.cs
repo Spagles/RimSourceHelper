@@ -97,8 +97,8 @@ public static class DecompileCommand
 
     private static object DecompileAsType(DatabaseContext db, TypeEntity type, string managedDir)
     {
-        var source = GetSource(db, type.SourceId);
-        var assemblyPath = ResolveAssemblyPath(source);
+        var assemblyPath = type.AssemblyPath
+            ?? throw new InvalidOperationException($"No assembly path for type '{type.FullName}'. Rebuild the database.");
         var refPaths = BuildReferencePaths(assemblyPath, managedDir);
 
         var code = DecompilerService.DecompileType(assemblyPath, refPaths, type.FullName);
@@ -114,8 +114,8 @@ public static class DecompileCommand
             "SELECT * FROM Types WHERE Id = @TypeId", new { firstMethod.TypeId })
             ?? throw new InvalidOperationException("Parent type not found in database.");
 
-        var source = GetSource(db, type.SourceId);
-        var assemblyPath = ResolveAssemblyPath(source);
+        var assemblyPath = type.AssemblyPath
+            ?? throw new InvalidOperationException($"No assembly path for type '{type.FullName}'. Rebuild the database.");
         var refPaths = BuildReferencePaths(assemblyPath, managedDir);
 
         var code = DecompilerService.DecompileMethod(assemblyPath, refPaths, type.FullName, firstMethod.Name);
@@ -128,24 +128,6 @@ public static class DecompileCommand
             overloads = methods.Count,
             source = code
         };
-    }
-
-    private static SourceEntity GetSource(DatabaseContext db, long sourceId)
-    {
-        return db.Connection.QueryFirstOrDefault<SourceEntity>(
-            "SELECT * FROM Sources WHERE Id = @sourceId", new { sourceId })
-            ?? throw new InvalidOperationException("Source not found in database.");
-    }
-
-    private static string ResolveAssemblyPath(SourceEntity source)
-    {
-        var path = source.AssemblyPath
-            ?? throw new InvalidOperationException($"No assembly path for source: {source.Name}");
-
-        if (!File.Exists(path))
-            throw new FileNotFoundException($"Assembly not found: {path}");
-
-        return path;
     }
 
     private static string[] BuildReferencePaths(string assemblyPath, string managedDir)

@@ -11,8 +11,8 @@ public class TypeRepository(SqliteConnection connection)
     public int BulkInsert(IEnumerable<TypeEntity> types)
     {
         const string sql = """
-            INSERT OR IGNORE INTO Types (Namespace, Name, FullName, BaseType, IsAbstract, IsInterface, IsEnum, IsSealed, Accessibility, AssemblyName, SourceId)
-            VALUES (@Namespace, @Name, @FullName, @BaseType, @IsAbstract, @IsInterface, @IsEnum, @IsSealed, @Accessibility, @AssemblyName, @SourceId)
+            INSERT OR IGNORE INTO Types (Namespace, Name, FullName, BaseType, IsAbstract, IsInterface, IsEnum, IsSealed, Accessibility, AssemblyName, AssemblyPath, SourceId)
+            VALUES (@Namespace, @Name, @FullName, @BaseType, @IsAbstract, @IsInterface, @IsEnum, @IsSealed, @Accessibility, @AssemblyName, @AssemblyPath, @SourceId)
             """;
 
         using var transaction = connection.BeginTransaction();

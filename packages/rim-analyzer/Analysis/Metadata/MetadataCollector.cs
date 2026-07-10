@@ -14,10 +14,11 @@ public static class MetadataCollector
 
         foreach (var asm in assemblies)
         {
+            var assemblyPath = asm.MainModule.FileName;
             log($"[INFO] Scanning assembly: {asm.Name.Name}");
 
             foreach (var type in asm.MainModule.Types)
-                CollectTypeRecursive(type, asm.Name.Name, types, methodMap, fieldMap);
+                CollectTypeRecursive(type, asm.Name.Name, assemblyPath, types, methodMap, fieldMap);
         }
 
         log($"[INFO] Collected {types.Count} types, " +
@@ -30,7 +31,8 @@ public static class MetadataCollector
 
     // 收集单个类型并递归处理嵌套类型
     private static void CollectTypeRecursive(TypeDefinition type, string assemblyName,
-        List<TypeMetadata> output, Dictionary<MethodDefinition, MethodEntity> methodMap,
+        string assemblyPath, List<TypeMetadata> output,
+        Dictionary<MethodDefinition, MethodEntity> methodMap,
         Dictionary<FieldDefinition, FieldEntity> fieldMap)
     {
         if (type.Name == "<Module>")
@@ -49,7 +51,8 @@ public static class MetadataCollector
                 IsEnum = type.IsEnum,
                 IsSealed = type.IsSealed,
                 Accessibility = GetTypeAccessibility(type),
-                AssemblyName = assemblyName
+                AssemblyName = assemblyName,
+                AssemblyPath = assemblyPath
             },
             Interfaces = type.Interfaces.Select(i => i.InterfaceType.FullName).ToList()
         };
@@ -62,7 +65,7 @@ public static class MetadataCollector
 
         // 递归收集嵌套类型
         foreach (var nested in type.NestedTypes)
-            CollectTypeRecursive(nested, assemblyName, output, methodMap, fieldMap);
+            CollectTypeRecursive(nested, assemblyName, assemblyPath, output, methodMap, fieldMap);
     }
 
     private static void CollectMethods(TypeDefinition type, TypeMetadata meta,

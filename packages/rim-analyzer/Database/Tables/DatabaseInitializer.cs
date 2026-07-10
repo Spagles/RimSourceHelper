@@ -47,6 +47,7 @@ public static class DatabaseInitializer
             IsSealed      INTEGER NOT NULL DEFAULT 0,
             Accessibility TEXT,
             AssemblyName  TEXT,
+            AssemblyPath  TEXT,
             SourceId      INTEGER NOT NULL REFERENCES Sources(Id)
         );
         CREATE INDEX IF NOT EXISTS idx_types_name ON Types(Name);

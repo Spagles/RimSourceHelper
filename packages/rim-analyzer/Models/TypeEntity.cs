@@ -14,5 +14,6 @@ public class TypeEntity
     public bool IsSealed { get; set; }
     public string? Accessibility { get; set; }
     public string? AssemblyName { get; set; }
+    public string? AssemblyPath { get; set; }
     public long SourceId { get; set; }
 }
