@@ -73,6 +73,7 @@ public static class RemoveModCommand
         conn.Execute("DELETE FROM XmlPatches WHERE SourceId = @sourceId", new { sourceId }, transaction);
         conn.Execute("DELETE FROM HarmonyPatches WHERE SourceId = @sourceId", new { sourceId }, transaction);
         conn.Execute("DELETE FROM Calls WHERE CallerMethodId IN (SELECT Id FROM Methods WHERE SourceId = @sourceId) OR CalleeMethodId IN (SELECT Id FROM Methods WHERE SourceId = @sourceId)", new { sourceId }, transaction);
+        conn.Execute("DELETE FROM FieldAccesses WHERE MethodId IN (SELECT Id FROM Methods WHERE SourceId = @sourceId) OR FieldId IN (SELECT Id FROM Fields WHERE SourceId = @sourceId)", new { sourceId }, transaction);
         conn.Execute("DELETE FROM Inheritance WHERE ParentTypeId IN (SELECT Id FROM Types WHERE SourceId = @sourceId) OR ChildTypeId IN (SELECT Id FROM Types WHERE SourceId = @sourceId)", new { sourceId }, transaction);
         conn.Execute("DELETE FROM DefReferences WHERE SourceDefId IN (SELECT Id FROM Defs WHERE SourceId = @sourceId)", new { sourceId }, transaction);
         conn.Execute("DELETE FROM Properties WHERE SourceId = @sourceId", new { sourceId }, transaction);
